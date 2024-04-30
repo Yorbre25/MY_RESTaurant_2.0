@@ -1,0 +1,23 @@
+
+Debe cumplir con las características de una arquitectura de servicios:
+- Bus de comunicación entre servicios (Entre el FE y BE no hay cola de mensajería - Se Mantiene como una REST)
+
+Rediseño:
+- Arquitectura de referencia
+- Arquitectura de negocio
+- Identificación
+- Especificacón e 
+- Imprementación de servicios (Como las revisones anteriores)
+- Pruebas de integración (Ampliar pruebas existentes)
+
+Reservaciones:
+- Posibilidad de visualizar disponibilidad de servicios.
+- Proceso de reserva intuitivo y fácil de usar.
+- Cancelación o edición de reserva para usuarios.
+- Notificaciones de reservas realizadas.
+
+Autentificación:
+- Capacidad de registro de nuevos usuarios.
+- Autenticación segura de usuarios registrados.
+- Restablecimiento de contraseña para usuarios olvidadizos. (Profe sugiere usar una pregunta de seguridad o un pin)
+- Gestión de roles de usuario para diferentes niveles de acceso.
