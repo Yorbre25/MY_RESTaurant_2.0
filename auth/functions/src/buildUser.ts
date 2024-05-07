@@ -1,6 +1,3 @@
-/* eslint-disable require-jsdoc */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint linebreak-style: ["error", "windows"]*/
 import {User} from "./User";
 
 export function buildUser(body: any):User {
