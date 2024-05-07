@@ -9,6 +9,9 @@ import {getAuth,
 import {addUserData, checkIfAdmin} from "./manageData";
 import {buildUser} from "./buildUser";
 import {firebaseConfig} from "./firebaseConfig";
+import {handleLogInError,
+  handleSignUpError,
+  handleResetPasswordError} from "./errorHandler";
 
 
 initializeApp(firebaseConfig);
@@ -24,8 +27,8 @@ export const logIn = v2.https.onRequest((request, response) => {
       response.send({user, isAdmin});
     })
     .catch((error) => {
-      const errorMessage = error.message;
-      response.send(errorMessage);
+      error = handleLogInError(error);
+      response.status(error.code).send(error.message);
     });
 });
 
@@ -40,20 +43,20 @@ export const signUp = v2.https.onRequest((request, response) => {
       response.send(user);
     })
     .catch((error) => {
-      const errorMessage = error.message;
-      response.send(errorMessage);
+      error = handleSignUpError(error);
+      response.status(error.code).send(error.message);
     });
 });
 
 export const resetPassword = v2.https.onRequest((request, response) => {
   const auth = getAuth();
-  const email = request.body.data.email;
+  const email = request.body.email;
   sendPasswordResetEmail(auth, email)
     .then(() => {
       response.send("Email sent");
     })
     .catch((error) => {
-      const errorMessage = error.message;
-      response.status(500).send(errorMessage);
+      error = handleResetPasswordError(error);
+      response.status(error.code).send(error.message);
     });
 });
