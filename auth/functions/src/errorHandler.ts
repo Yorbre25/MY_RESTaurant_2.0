@@ -33,3 +33,10 @@ export function handleResetPasswordError(error: any) : AppError {
   }
   return {code: 500, message: "Internal server error"};
 }
+
+export function handlePromoteToAdminError(error: any) : AppError {
+  if (error.message == "User not found") {
+    return {code: 404, message: "User not found"};
+  }
+  return {code: 500, message: "Internal server error"};
+}
