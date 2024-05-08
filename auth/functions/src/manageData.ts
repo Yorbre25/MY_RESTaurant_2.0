@@ -1,6 +1,4 @@
-/* eslint-disable require-jsdoc */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint linebreak-style: ["error", "windows"]*/
+/* eslint-disable no-debugger */
 import * as fs from "fs";
 import {User} from "./User";
 
@@ -32,6 +30,18 @@ function addUser(users: User[], newUser: User) {
 export function addUserData(user : User) {
   const users = readFile();
   addUser(users, user);
+}
+
+export function makeAdmin(email: string) {
+  debugger;
+  const users = readFile();
+  const user = users.find((user:any) => user.email === email);
+  if (user) {
+    user.isAdmin = true;
+    fs.writeFileSync(fileName, JSON.stringify(users, null, 4), "utf8");
+  } else {
+    throw new Error("User not found");
+  }
 }
 
 export function checkIfAdmin(email: string): boolean {

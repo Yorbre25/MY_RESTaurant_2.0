@@ -1,12 +1,17 @@
 [
     {
+        "email": "yraulbr25@gmail.com",
+        "name": "Yordi",
+        "isAdmin": true
+    },
+    {
         "email": "ignacio@gmail.com",
         "name": "Ignacio",
         "isAdmin": false
     },
     {
-        "email": "yraulbr25@gmail.com",
-        "name": "Yordi",
-        "isAdmin": true
+        "email": "andrey@gmail.com",
+        "name": "Andrey",
+        "isAdmin": false
     }
 ]

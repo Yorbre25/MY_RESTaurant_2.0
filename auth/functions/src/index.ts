@@ -1,17 +1,20 @@
 /* eslint-disable no-debugger */
+/* eslint-disable no-ex-assign */
 import * as v2 from "firebase-functions/v2";
-// import {firebaseConfig}
 import {initializeApp} from "firebase/app";
 import {getAuth,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   sendPasswordResetEmail} from "firebase/auth";
-import {addUserData, checkIfAdmin} from "./manageData";
+import {addUserData,
+  checkIfAdmin,
+  makeAdmin} from "./manageData";
 import {buildUser} from "./buildUser";
 import {firebaseConfig} from "./firebaseConfig";
 import {handleLogInError,
   handleSignUpError,
-  handleResetPasswordError} from "./errorHandler";
+  handleResetPasswordError,
+  handlePromoteToAdminError} from "./errorHandler";
 
 
 initializeApp(firebaseConfig);
@@ -60,3 +63,16 @@ export const resetPassword = v2.https.onRequest((request, response) => {
       response.status(error.code).send(error.message);
     });
 });
+
+export const prmoteToAdmin = v2.https.onRequest((request, response) => {
+  try {
+    debugger;
+    const email = request.body.email;
+    makeAdmin(email);
+    response.send("User is now an admin");
+  } catch (error:any) {
+    error = handlePromoteToAdminError(error);
+    response.status(error.code).send(error.message);
+  }
+});
+
