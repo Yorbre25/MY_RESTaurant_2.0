@@ -43,4 +43,15 @@ class pull_suscriber:
                 self.streaming_pull_future.cancel()  # Trigger the shutdown.
                 self.streaming_pull_future.result()  # Block until the shutdown is complete.
         return self.match_message
+    
+    def get_response(self):
+        if(self.match_message==None):
+            error_msg={
+                "msg": "the request has timeout"
+            }
+            return error_msg, 408, {'Access-Control-Allow-Origin': '*'}
+        elif "error" in self.match_message:
+            return self.match_message,self.match_message['error'], {'Access-Control-Allow-Origin': '*'}
+        else:
+            return self.match_message,200, {'Access-Control-Allow-Origin': '*'}       
 

@@ -43,17 +43,10 @@ def get_recommendation():
         request_body=request_body | request.json
         publish(request_body,request_body["dst"])
         my_pull=pull_suscriber(services['BACKEND'].value,services['RECOMMENDATION'].value,request_id)
-        result_msg=my_pull.listen()
-
-        if(result_msg==None):
-            error_msg={
-                "msg": "the request has timeout"
-            }
-            return error_msg, 408, {'Access-Control-Allow-Origin': '*'}
-        elif "error" in result_msg:
-            return result_msg,result_msg['error'], {'Access-Control-Allow-Origin': '*'}
-        else:
-            return result_msg,200, {'Access-Control-Allow-Origin': '*'}
+        my_pull.listen()
+        body,error_code,CORS=my_pull.get_response()
+        return body,error_code,CORS
+        
 
 
     except Exception as e:
