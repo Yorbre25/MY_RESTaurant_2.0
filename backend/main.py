@@ -33,11 +33,31 @@ def sentiment_api():
 @app.route('/get-recommendation', methods=['POST'])
 def get_recommendation():
     try:
-        # Hacer una solicitud POST al servicio de Sentiment Analysis
-        response = requests.post(f"{base_url}/Recommendation_Items", json=request.json)
-        return jsonify(response.json()), response.status_code
+        
+        request_id=str(uuid.uuid4())
+        request_body={
+            "dst":services['RECOMMENDATION'].value,
+            "src":services['BACKEND'].value,
+            "flow_id":request_id
+        }
+        request_body=request_body | request.json
+        publish(request_body,request_body["dst"])
+        my_pull=pull_suscriber(services['BACKEND'].value,services['RECOMMENDATION'].value,request_id)
+        result_msg=my_pull.listen()
+
+        if(result_msg==None):
+            error_msg={
+                "msg": "the request has timeout"
+            }
+            return error_msg, 408, {'Access-Control-Allow-Origin': '*'}
+        elif "error" in result_msg:
+            return result_msg,result_msg['error'], {'Access-Control-Allow-Origin': '*'}
+        else:
+            return result_msg,200, {'Access-Control-Allow-Origin': '*'}
+
+
     except Exception as e:
-        return jsonify({"message": f"Error: {e}"}), response.status_code
+        return jsonify({"message": f"Error: {e}"}), 500
 
 
 @app.route('/get-menu', methods=['GET'])
