@@ -1,7 +1,10 @@
 from flask import Flask, request, jsonify
 import requests
 from flask_cors import CORS
-
+import uuid
+from receive_msg import *
+from send_msg import *
+from available_services import services
 app = Flask(__name__)
 CORS(app)
 
@@ -40,11 +43,20 @@ def get_recommendation():
 @app.route('/get-menu', methods=['GET'])
 def get_menu():
     try:
-        response = requests.get(f"{base_url}/menu_service")
-        response.raise_for_status()  # Raise exception for non-200 status codes
-        return jsonify(response.json()), response.status_code, {'Access-Control-Allow-Origin': '*'}
+        request_id=str(uuid.uuid4())
+        request_body={
+            "dst":services['MENU'].value,
+            "src":services['BACKEND'].value,
+            "flow_id":request_id
+        }
+        publish(request_body,services['MENU'].value)
+        my_pull=pull_suscriber(services['BACKEND'].value,services['MENU'].value,request_id)
+        my_message=my_pull.listen()
+
+        
+        return jsonify(my_message), 200, {'Access-Control-Allow-Origin': '*'}
     except requests.exceptions.RequestException as e:
-        return jsonify({"message": f"Error: {e}"}), response.status_code, {}  # Internal Server Error
+        return jsonify({"message": f"Error: {e}"}), 500, {}  # Internal Server Error
 
 @app.route('/')
 def index():
