@@ -44,7 +44,3 @@ class pull_suscriber:
                 self.streaming_pull_future.result()  # Block until the shutdown is complete.
         return self.match_message
 
-my_pull=pull_suscriber("backend","backend","32")
-my_message=my_pull.listen()
-print("my message is")
-print(my_message)
