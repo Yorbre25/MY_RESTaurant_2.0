@@ -25,7 +25,7 @@ def get_reservations():
 @app.route('/sentiment-api', methods=['POST'])
 def sentiment_api():
     try:
-        body,error_code,CORS=send_msg(request,'SENTIMENT_REVIEW')
+        body,error_code,CORS=send_msg(request.json,'SENTIMENT_REVIEW')
         return body,error_code,CORS
     except Exception as e:
         return jsonify({"message": f"Error: {e}"}), 500
@@ -33,7 +33,7 @@ def sentiment_api():
 @app.route('/get-recommendation', methods=['POST'])
 def get_recommendation():
     try:
-        body,error_code,CORS=send_msg(request,'RECOMMENDATION')
+        body,error_code,CORS=send_msg(request.json,'RECOMMENDATION')
         return body,error_code,CORS
     except Exception as e:
         return jsonify({"message": f"Error: {e}"}), 500
@@ -42,7 +42,7 @@ def get_recommendation():
 @app.route('/get-menu', methods=['GET'])
 def get_menu():
     try:
-        body,error_code,CORS=send_msg(request,'MENU')
+        body,error_code,CORS=send_msg({},'MENU')
         return body,error_code,CORS
 
     except requests.exceptions.RequestException as e:
@@ -53,7 +53,7 @@ def index():
     return 'Welcome to the MYRESTaurant Reservation System!'
 
 
-def send_msg(request,destiny_key):
+def send_msg(body,destiny_key):
             
     request_id=str(uuid.uuid4())
     request_body={
@@ -61,7 +61,7 @@ def send_msg(request,destiny_key):
         "src":services[service_key].value,
         "flow_id":request_id
     }
-    request_body=request_body | request.json
+    request_body=request_body | body
     publish(request_body,request_body["dst"])
     my_pull=pull_suscriber(services[service_key].value,services[destiny_key].value,request_id)
     my_pull.listen()
