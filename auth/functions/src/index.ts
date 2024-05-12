@@ -20,6 +20,13 @@ import {handleLogInError,
 initializeApp(firebaseConfig);
 
 export const logIn = v2.https.onRequest((request, response) => {
+  response.set("Access-Control-Allow-Origin", "*");
+  response.set("Access-Control-Allow-Methods", "POST");
+  response.set("Access-Control-Allow-Headers", "Content-Type");
+  if (request.method == "OPTIONS") {
+    response.status(204).send("");
+    return;
+  }
   const auth = getAuth();
   const password = request.body.password;
   const email = request.body.email;
@@ -36,6 +43,13 @@ export const logIn = v2.https.onRequest((request, response) => {
 });
 
 export const signUp = v2.https.onRequest((request, response) => {
+  response.set("Access-Control-Allow-Origin", "*");
+  response.set("Access-Control-Allow-Methods", "POST");
+  response.set("Access-Control-Allow-Headers", "Content-Type");
+  if (request.method == "OPTIONS") {
+    response.status(204).send("");
+    return;
+  }
   const auth = getAuth();
   const newUser = buildUser(request.body);
   const password = request.body.password;
@@ -52,11 +66,18 @@ export const signUp = v2.https.onRequest((request, response) => {
 });
 
 export const resetPassword = v2.https.onRequest((request, response) => {
+  response.set("Access-Control-Allow-Origin", "*");
+  response.set("Access-Control-Allow-Methods", "POST");
+  response.set("Access-Control-Allow-Headers", "Content-Type");
+  if (request.method == "OPTIONS") {
+    response.status(204).send("");
+    return;
+  }
   const auth = getAuth();
   const email = request.body.email;
   sendPasswordResetEmail(auth, email)
     .then(() => {
-      response.send("Email sent");
+      response.status(200).send({message: "Email sent"});
     })
     .catch((error) => {
       error = handleResetPasswordError(error);
@@ -66,10 +87,17 @@ export const resetPassword = v2.https.onRequest((request, response) => {
 
 export const prmoteToAdmin = v2.https.onRequest((request, response) => {
   try {
+    response.set("Access-Control-Allow-Origin", "*");
+    response.set("Access-Control-Allow-Methods", "POST");
+    response.set("Access-Control-Allow-Headers", "Content-Type");
+    if (request.method == "OPTIONS") {
+      response.status(204).send("");
+      return;
+    }
     debugger;
     const email = request.body.email;
     makeAdmin(email);
-    response.send("User is now an admin");
+    response.status(200).send({message: "User is now an admin"});
   } catch (error:any) {
     error = handlePromoteToAdminError(error);
     response.status(error.code).send(error.message);
