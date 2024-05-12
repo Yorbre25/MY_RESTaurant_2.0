@@ -5,6 +5,7 @@ import uuid
 from receive_msg import *
 from send_msg import *
 from available_services import services
+import logging
 app = Flask(__name__)
 CORS(app)
 
@@ -35,6 +36,9 @@ def get_recommendation():
     try:
         
         request_id=str(uuid.uuid4())
+        logging.basicConfig(level=logging.INFO) 
+        logging.info(msg="llegue al metodo")
+        logging.info(msg=str([e.value for e in services]))
         request_body={
             "dst":services['RECOMMENDATION'].value,
             "src":services['BACKEND'].value,
