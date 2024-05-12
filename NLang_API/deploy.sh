@@ -6,4 +6,5 @@ gcloud functions deploy sentiment_analysis \
 --source=$(dirname "$0") \
 --entry-point=sentiment_api \
 --trigger-http \
---memory 1024MB
+--memory 1024MB \
+--no-allow-unauthenticated
