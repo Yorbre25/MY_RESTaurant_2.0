@@ -1,0 +1,25 @@
+<div class="login-container">
+    <div class="left-column">
+      <img src="../../../../assets/loginBg.png" alt="Login Image">
+    </div>
+    <div class="right-column">
+        <h3>Welcome to MyRest-aurant 2.0!</h3>
+        <form class="login-form" (ngSubmit)="submitForm()">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" class="form-control" required autocomplete="new-username" [(ngModel)]="username">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control" required autocomplete="new-password" [(ngModel)]="password">
+            </div>
+            @if (errorMessage) {
+                <h4 class="error-msg">{{errorMessage}}</h4>
+            }
+            <button type="submit" class="login-btn">Login</button>
+            <span><a routerLink="/signup" class="link" href="">Create Account</a><i class="fa-solid fa-door-open"></i></span>
+            <span><a routerLink="/reset-psw" class="link" href="">Forgot password?</a><i class="fa-solid fa-door-open"></i></span>
+        </form>
+    </div>
+</div>
+<button [routerLink]="'/home'" type="button" class="home-btn">Go to Menu</button>

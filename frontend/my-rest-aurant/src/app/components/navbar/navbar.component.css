@@ -5,4 +5,20 @@
     border-bottom: 1px solid rgba(128, 128, 128, 0.116);
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+.user-welcome{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logout-btn{
+    background-color: rgba(var(--main-color), 0.7);
+    border: 1px dashed rgba(var(--main-color), 0.3);
+    padding: 0.4rem;
+    cursor: pointer;
+    border-radius: 5px;
 }

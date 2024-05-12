@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "my-rest-raurant-2": {
+      "hosting": {
+        "my-rest-aurant": [
+          "my-rest-raurant-2"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "my-rest-raurant-2"
+  }
+}

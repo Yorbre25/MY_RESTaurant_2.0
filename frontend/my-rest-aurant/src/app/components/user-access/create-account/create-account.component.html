@@ -1,0 +1,27 @@
+<div class="signup-container">
+    <div class="left-column">
+      <img src="../../../../assets/signupBg.jpg" alt="signup Image">
+    </div>
+    <div class="right-column">
+        <h3>Create a new user account</h3>
+        <form class="signup-form" (ngSubmit)="submitForm()">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" class="form-control" required autocomplete="new-name-off" [(ngModel)]="name">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" id="email" name="email" class="form-control" required autocomplete="new-email-off" [(ngModel)]="email">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control" required autocomplete="new-password-off" [(ngModel)]="password">
+            </div>
+            @if (errorMessage) {
+                <h4 class="error-msg">{{errorMessage}}</h4>
+            }
+            <button type="submit" class="signup-btn">Sign Up</button>
+            <span><a routerLink="/login" class="link">Go to login</a><i class="fa-solid fa-door-open"></i></span>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,9 @@
+{
+  "hosting": [
+    {
+      "target": "my-rest-aurant",
+      "source": ".",
+      "frameworksBackend": {}
+    }
+  ]
+}
