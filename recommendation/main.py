@@ -50,8 +50,9 @@ def handle_type_error(e):
 
 def publish_error_response(body,error):
   body['error']=error
-  body=body | return_info
-  publish(body,return_info['dst'])
+  if(return_info is not None):
+    body=body | return_info
+    publish(body,return_info['dst'])
   
 
 
