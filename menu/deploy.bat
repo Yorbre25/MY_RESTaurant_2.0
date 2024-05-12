@@ -6,4 +6,5 @@ gcloud functions deploy menu_service ^
 --source=%~dp0 ^
 --entry-point=get_menu ^
 --trigger-http ^
---memory 512MB
+--memory 512MB ^
+--no-allow-unauthenticated
