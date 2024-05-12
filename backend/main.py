@@ -8,6 +8,7 @@ from available_services import services
 import logging
 app = Flask(__name__)
 CORS(app)
+service_key="BACKEND"
 
 base_url = 'https://us-central1-smart-spark-418815.cloudfunctions.net'
 
@@ -24,35 +25,16 @@ def get_reservations():
 @app.route('/sentiment-api', methods=['POST'])
 def sentiment_api():
     try:
-        # Hacer una solicitud GET al servicio de sentiment
-        response = requests.post(f"{base_url}/Sentiment_Review", json=request.json)
-        return jsonify(response.json()), response.status_code
-
+        body,error_code,CORS=send_msg(request,'SENTIMENT_REVIEW')
+        return body,error_code,CORS
     except Exception as e:
-        return jsonify({"message": f"Error: {e}"}), response.status_code
+        return jsonify({"message": f"Error: {e}"}), 500
 
 @app.route('/get-recommendation', methods=['POST'])
 def get_recommendation():
     try:
-        
-        request_id=str(uuid.uuid4())
-        logging.basicConfig(level=logging.INFO) 
-        logging.info(msg="llegue al metodo")
-        logging.info(msg=str([e.value for e in services]))
-        request_body={
-            "dst":services['RECOMMENDATION'].value,
-            "src":services['BACKEND'].value,
-            "flow_id":request_id
-        }
-        request_body=request_body | request.json
-        publish(request_body,request_body["dst"])
-        my_pull=pull_suscriber(services['BACKEND'].value,services['RECOMMENDATION'].value,request_id)
-        my_pull.listen()
-        body,error_code,CORS=my_pull.get_response()
+        body,error_code,CORS=send_msg(request,'RECOMMENDATION')
         return body,error_code,CORS
-        
-
-
     except Exception as e:
         return jsonify({"message": f"Error: {e}"}), 500
 
@@ -60,18 +42,9 @@ def get_recommendation():
 @app.route('/get-menu', methods=['GET'])
 def get_menu():
     try:
-        request_id=str(uuid.uuid4())
-        request_body={
-            "dst":services['MENU'].value,
-            "src":services['BACKEND'].value,
-            "flow_id":request_id
-        }
-        publish(request_body,services['MENU'].value)
-        my_pull=pull_suscriber(services['BACKEND'].value,services['MENU'].value,request_id)
-        my_message=my_pull.listen()
+        body,error_code,CORS=send_msg(request,'MENU')
+        return body,error_code,CORS
 
-        
-        return jsonify(my_message), 200, {'Access-Control-Allow-Origin': '*'}
     except requests.exceptions.RequestException as e:
         return jsonify({"message": f"Error: {e}"}), 500, {}  # Internal Server Error
 
@@ -79,5 +52,20 @@ def get_menu():
 def index():
     return 'Welcome to the MYRESTaurant Reservation System!'
 
+
+def send_msg(request,destiny_key):
+            
+    request_id=str(uuid.uuid4())
+    request_body={
+        "dst":services[destiny_key].value,
+        "src":services[service_key].value,
+        "flow_id":request_id
+    }
+    request_body=request_body | request.json
+    publish(request_body,request_body["dst"])
+    my_pull=pull_suscriber(services[service_key].value,services[destiny_key].value,request_id)
+    my_pull.listen()
+    body,error_code,CORS=my_pull.get_response()
+    return body,error_code,CORS
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
