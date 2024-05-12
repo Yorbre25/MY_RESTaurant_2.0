@@ -3,7 +3,8 @@ import random
 from models import Meal
 from database import IDataSource, init_data_source
 
-
+data_source = None
+predefined_recommender = None
 
 class PredefinedRecommender:
     def __init__(self, data_source: IDataSource):
@@ -63,15 +64,17 @@ class PredefinedRecommender:
     
     
 def get_predefined_recom(meal: Meal, recomendation_of: list[str]) -> str:
-    
+    data_source = init_data_source()
+    predefined_recommender = init_default_recommender(data_source)
     response = predefined_recommender.recommend(meal, recomendation_of)
     return response
   
 
 
 def init_default_recommender(data_source):
+    
     return PredefinedRecommender(data_source)
 
-data_source = init_data_source()
-predefined_recommender = init_default_recommender(data_source)
+
+
 

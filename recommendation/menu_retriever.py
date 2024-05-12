@@ -1,10 +1,22 @@
+import uuid
+from send_msg import publish
+from receive_msg import pull_suscriber
 
-import requests
-url="https://backendcloudfunc-x3adwyscpa-uc.a.run.app/get-menu"
 
 def request_restaurant_menu():
-    response=requests.get(url)
-    return response.json(),response.status_code
+    request_id=str(uuid.uuid4())
+    request_body={
+        "dst":"menu_service",
+        "src":"backend",
+        "flow_id":request_id
+    }
+    publish(request_body,request_body['dst'])
+    my_pull=pull_suscriber(request_body['src'],request_body['dst'],request_id)
+    my_pull.listen()
+    body,error_code,CORS=my_pull.get_response()
+    
+
+    return body,error_code
 
 def build_format(menu_json):
     main_dishes=menu_json["main_dishes"]
