@@ -12,7 +12,7 @@ export class MealRecommendationService {
   private _selectedMeals: BehaviorSubject<Meal[]> = new BehaviorSubject<Meal[]>([]);
   selectedMeals$: Observable<Meal[]> = this._selectedMeals.asObservable();
 
-  backEndAddress: string = "https://backendcloudfunc-x3adwyscpa-uc.a.run.app/";
+  backEndAddress: string = "https://backend-nzaawxvneq-uc.a.run.app/";
   
   constructor(private http: HttpClient) { }
 
@@ -26,6 +26,10 @@ export class MealRecommendationService {
   addSelectedMeal(meal: Meal): void {
     const meals = [...this._selectedMeals.getValue(), meal];
     this.selectedMeals = meals;
+  }
+
+  clearMeals(): void {
+    this.selectedMeals = [];
   }
 
   removeMeal(mealToDelete: Meal): void {
@@ -42,7 +46,14 @@ export class MealRecommendationService {
   }
 
   getMealRecommendation(body: any): Observable<any> {
-    return this.http.post(this.backEndAddress + "get-recommendation", body);
+    const timeoutDuration = 40000;
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }),
+      timeout: timeoutDuration
+    };
+    return this.http.post(this.backEndAddress + "get-recommendation", body, options);
   }
 
 }

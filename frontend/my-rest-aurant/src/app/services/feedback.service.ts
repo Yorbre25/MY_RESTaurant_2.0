@@ -7,12 +7,19 @@ import { Observable } from 'rxjs';
 })
 export class FeedbackService {
 
-  backEndAddress: string = "https://backendcloudfunc-x3adwyscpa-uc.a.run.app/";
+  backEndAddress: string = "https://backend-nzaawxvneq-uc.a.run.app/";
 
   constructor(private http: HttpClient) { }
 
   postFeedback(feedback: string): Observable<any>{
+    const timeoutDuration = 40000;
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }),
+      timeout: timeoutDuration
+    };
     const data = { "review": feedback }
-    return this.http.post(this.backEndAddress + "sentiment-api", data);
+    return this.http.post(this.backEndAddress + "sentiment-api", data, options);
   }
 }

@@ -38,14 +38,16 @@ export class MenuComponent implements OnInit {
   }
 
   formatMenuData(menu : { string : string[] }){
-    
-    Object.entries(menu).forEach(([category, dishes], i) => {
-      this.categorizedMeals.push( { category: this.getDishCategory(category), meals: []})
-      dishes.forEach(dishName => {
-        const newMealItem: Meal = { Name: this.capitalizeFirstLetter(dishName) , Price: "3", Category: this.getDishCategory(category)}
-        this.categorizedMeals[i].meals.push(newMealItem);
-      })
-
+    let index = 0
+    Object.entries(menu).forEach(([category, dishes]) => {
+      if(category == 'desserts' || category == 'drinks' || category == 'main_dishes'){
+        this.categorizedMeals.push( { category: this.getDishCategory(category), meals: []})
+        dishes.forEach(dishName => {
+          const newMealItem: Meal = { Name: this.capitalizeFirstLetter(dishName) , Price: "3", Category: this.getDishCategory(category)}
+          this.categorizedMeals[index].meals.push(newMealItem);
+        })
+        index += 1;
+      }
     })
   }
 

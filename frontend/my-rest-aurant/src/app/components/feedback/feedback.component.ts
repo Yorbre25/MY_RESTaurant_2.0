@@ -22,7 +22,7 @@ export class FeedbackComponent {
     this.feedbackService.postFeedback(textArea.value).subscribe((result: { msg:string , scale:number }) => {
       console.log({result})
       this.feedbackResponse.nativeElement.innerText = result.msg;
+      textArea.value = ""
     })
-    textArea.value = ""
   }
 }
