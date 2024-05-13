@@ -88,6 +88,23 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "version": 2
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "my-rest-aurant:build:production",
+              "serveTarget": "my-rest-aurant:serve:production"
+            },
+            "development": {
+              "buildTarget": "my-rest-aurant:build:development",
+              "serveTarget": "my-rest-aurant:serve:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }

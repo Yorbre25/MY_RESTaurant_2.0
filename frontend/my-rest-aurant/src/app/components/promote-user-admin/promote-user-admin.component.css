@@ -1,0 +1,58 @@
+:host{
+    border: 1px solid rgba(128, 128, 128, 0.150);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 1rem;
+}
+button{
+    width: fit-content;
+    background-color: rgba(var(--main-color), 0.3);
+    border: 1px solid rgba(128, 128, 128, 0.443);
+    border-radius: 5px;
+    align-self: self-start;
+    margin: 0rem 1rem 0rem 1rem;
+    padding: 0.25rem 0.5rem 0.25rem 0.5rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+button:hover{
+    background-color: rgba(var(--main-color), 0.5);
+    transform: scale(1.01);
+}
+.promoteUser-section{
+    display: flex;
+    flex-direction: row;
+    padding: 1rem;
+}
+.promoteUser-section .description{
+    flex-basis: 0;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+.promoteUser-section .description span:nth-child(1){
+    font-size: 1.25rem;
+}
+.promoteUser-section .description span:nth-child(2){
+    font-size: 0.90rem;
+    margin: 0.25rem 0.5rem 0.25rem 0.5rem;
+}
+.promoteUser-section .promoteUser-input {
+    flex-basis: 0;
+    flex-grow: 1;
+    padding: 1%;
+    resize: none;
+    height: 25px;
+    border: 1px solid rgba(128, 128, 128, 0.150);
+    background-color: rgba(var(--sec-color), 0.15);
+    outline: none;
+}
+.error-msg{
+    color: red;
+    font-weight: bold;
+}
+.success-msg{
+    color: green;
+    font-weight: bold;
+}

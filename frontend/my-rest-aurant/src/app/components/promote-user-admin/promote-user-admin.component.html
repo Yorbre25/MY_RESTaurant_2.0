@@ -1,0 +1,14 @@
+<section class="promoteUser-section">
+    <div class="description">
+        <span>Promote User To Admin</span>
+        <span>Enter the email to promote the user role to admin</span>
+        @if (errorMessage) {
+            <h4 class="error-msg">{{errorMessage}}</h4>
+        }
+        @if (successMessage) {
+            <h4 class="success-msg">{{successMessage}}!</h4>
+        }
+    </div>
+    <input class="promoteUser-input" type="email" [(ngModel)]="email">
+</section>
+<button (click)="promoteUser()">Promote User</button>
