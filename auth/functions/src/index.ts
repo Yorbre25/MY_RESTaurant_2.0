@@ -8,6 +8,7 @@ import {getAuth,
   sendPasswordResetEmail} from "firebase/auth";
 import {addUserData,
   checkIfAdmin,
+  getUsers,
   makeAdmin} from "./manageData";
 import {buildUser} from "./buildUser";
 import {firebaseConfig} from "./firebaseConfig";
@@ -29,11 +30,12 @@ export const logIn = v2.https.onRequest((request, response) => {
   }
   const auth = getAuth();
   const password = request.body.password;
+  // debugger;
   const email = request.body.email;
   signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
+    .then(async (userCredential) => {
       const user = userCredential.user;
-      const isAdmin = checkIfAdmin(email);
+      const isAdmin = await checkIfAdmin(email);
       response.send({user, isAdmin});
     })
     .catch((error) => {
@@ -101,6 +103,15 @@ export const prmoteToAdmin = v2.https.onRequest((request, response) => {
   } catch (error:any) {
     error = handlePromoteToAdminError(error);
     response.status(error.code).send(error.message);
+  }
+});
+
+export const listUsers = v2.https.onRequest(async (request, response) => {
+  try {
+    const data = await getUsers();
+    response.send(data);
+  } catch (error:any) {
+    response.send(error.message);
   }
 });
 

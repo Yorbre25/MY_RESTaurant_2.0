@@ -1,51 +1,79 @@
 /* eslint-disable no-debugger */
-import * as fs from "fs";
 import {User} from "./User";
+import {Storage} from "@google-cloud/storage";
 
+const storage = new Storage();
+const bucketName = "userdata-bucket";
 const fileName = "users.json";
 
-function readFile():any {
-  let users: User[] = [];
+async function getFile(): Promise<Buffer> {
   try {
-    const file = fs.readFileSync(fileName);
+    const [file] = await storage.bucket(bucketName).file(fileName).download();
+    return file;
+  } catch (error:any) {
+    console.log("Error reading file" + error.message);
+    throw new Error("Error reading file" + error.message);
+  }
+}
+
+async function saveFile(file: any) {
+  await storage.bucket(bucketName).file(fileName).save(file);
+}
+
+async function readFile(): Promise<User[]> {
+  try {
+    const file = await getFile();
+    let users: User[] = [];
     if (file.length > 0) {
       users = JSON.parse(file.toString());
     }
     return users;
-  } catch (error: any) {
+  } catch (error:any) {
     if (error.code === "ENOENT") {
-      fs.writeFileSync(fileName, "[]");
+      saveFile("[]");
       return readFile();
     }
-    throw new Error("Error reading file" + error.message);
+    console.error("Error reading file: " + error.message);
+    throw new Error("Error reading file: " + error.message);
   }
 }
 
 function addUser(users: User[], newUser: User) {
   users.push(newUser);
-  fs.writeFileSync(fileName, JSON.stringify(users, null, 4), "utf8");
+  const newData = JSON.stringify(users, null, 4);
+  saveFile(newData);
 }
 
 
-export function addUserData(user : User) {
-  const users = readFile();
+export async function addUserData(user : User) {
+  const users = await readFile();
   addUser(users, user);
 }
 
-export function makeAdmin(email: string) {
+export async function makeAdmin(email: string) {
   debugger;
-  const users = readFile();
+  const users = await readFile();
   const user = users.find((user:any) => user.email === email);
   if (user) {
     user.isAdmin = true;
-    fs.writeFileSync(fileName, JSON.stringify(users, null, 4), "utf8");
+    const newData = JSON.stringify(users, null, 4);
+    saveFile(newData);
   } else {
     throw new Error("User not found");
   }
 }
 
-export function checkIfAdmin(email: string): boolean {
-  const users = readFile();
-  const admin = users.find((user:any) => user.email === email && user.isAdmin);
+export async function checkIfAdmin(email: string): Promise<boolean> {
+  const users = await readFile();
+  console.log(users);
+  console.log("todo good en checkIfAdmin");
+  const admin = users.find((user:any) =>
+    user.email === email && user.isAdmin);
   return admin ? true : false;
+}
+
+export async function getUsers() {
+  const users = await readFile();
+  console.log(users);
+  return users;
 }

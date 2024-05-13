@@ -6,7 +6,7 @@ Rediseño:
 - Arquitectura de referencia
 - Arquitectura de negocio
 - Identificación
-- Especificacón e 
+- Especificacón  
 - Imprementación de servicios (Como las revisones anteriores)
 - Pruebas de integración (Ampliar pruebas existentes)
 
