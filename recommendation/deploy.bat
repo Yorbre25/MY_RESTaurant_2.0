@@ -1,4 +1,4 @@
-gcloud functions deploy recommendation-service ^
+gcloud functions deploy recommendation-services ^
 --project my-rest-raurant-2 ^
 --gen2 ^
 --region=us-central1 ^
