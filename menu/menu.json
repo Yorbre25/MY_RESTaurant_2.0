@@ -1,0 +1,32 @@
+{
+    "main_dishes": [
+        "pizza",
+        "burger",
+        "pasta",
+        "sushi",
+        "steak",
+        "fish and chips",
+        "tacos",
+        "grilled chicken"
+    ],
+    "drinks": [
+        "coke",
+        "lemonade",
+        "iced tea",
+        "green tea",
+        "red wine",
+        "beer",
+        "margarita",
+        "iced coffee"
+    ],
+    "desserts": [
+        "ice cream",
+        "chocolate cake",
+        "tiramisu",
+        "mochi ice cream",
+        "cheesecake",
+        "apple pie",
+        "churros",
+        "fruit salad"
+    ]
+}
