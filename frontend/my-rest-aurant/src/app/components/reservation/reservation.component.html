@@ -1,4 +1,4 @@
-<app-reservations></app-reservations>
+<app-reservations [email]="this.userEmail" ></app-reservations>
 
 <div>
     <button *ngIf="!displayCalendar" (click)="toggleCalendar()" class="new-reservation-btn">New Reservation</button>
@@ -10,14 +10,19 @@
     </div>
     
     <div *ngIf="availableTimes?.length">
-        <p>Select a time:</p>
+        <p>Select a time and see available slots:</p>
         <ul>
             <li *ngFor="let time of availableTimes" (click)="selectTime(time)">
-                {{ time }}
+                {{ time.time }} (Max guests: {{ time.maxGuests }})
             </li>
         </ul>
     </div>
     
-    <button *ngIf="selectedTime" (click)="createReservation()" class="book-now-btn">Book Now!</button>
+    <div *ngIf="selectedTime">
+        <p>Enter number of guests:</p>
+        <input type="number" [(ngModel)]="selectedGuests" min="1" max="{{ maxGuestsAllowed }}" placeholder="Number of Guests">
+    </div>
+    
+    <button *ngIf="selectedGuests" (click)="createReservation()" class="book-now-btn">Book Now!</button>
     <span #message></span>
 </div>

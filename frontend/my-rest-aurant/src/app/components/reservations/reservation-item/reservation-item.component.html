@@ -2,8 +2,7 @@
     <div class="reservation-info">
         <strong class="time-display">{{ reservationInfo?.time }}</strong>
         <br>
-        <strong>Name:</strong> {{ reservationInfo?.name }}
-        <strong>Number of People:</strong> {{ reservationInfo?.numberOfPeople }}
+        <strong>Number of Guests:</strong> {{ reservationInfo?.numberOfPeople }}
     </div>
     <div class="action-buttons">
         <button (click)="onModify()" [class.active]="showModifyOptions" class="icon-button modify">

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms'; // Import FormsModule here
 import { Reservation } from '../../../models/reservation';
-
+import { ReservationService } from '../../../services/reservation.service';
 @Component({
   selector: 'app-reservation-item',
   standalone: true,
@@ -19,9 +19,14 @@ export class ReservationItemComponent {
   modifyingField: string = '';
   modifiedValue: any;
 
+  constructor(private reservationService: ReservationService) {}
+
   onDelete() {
     if (this.reservationInfo) {
-      this.delete.emit(this.reservationInfo.id);
+      this.reservationService.deleteReservation(this.reservationInfo.id).subscribe({
+        next: () => console.log('Reservation deleted successfully'),
+        error: error => console.error('Error deleting reservation', error)
+      });
     }
   }
 
@@ -42,8 +47,11 @@ export class ReservationItemComponent {
 
   confirmModification() {
     if (this.reservationInfo && this.modifyingField && this.modifiedValue !== undefined) {
-      this.modify.emit({ field: this.modifyingField, value: this.modifiedValue });
-      // Reset the modification view
+      const updatedReservation = { ...this.reservationInfo, [this.modifyingField]: this.modifiedValue };
+      this.reservationService.updateReservation(this.reservationInfo.id, updatedReservation).subscribe({
+        next: () => console.log('Reservation updated successfully'),
+        error: error => console.error('Error updating reservation', error)
+      });
       this.showModifyOptions = false;
       this.modifyingField = '';
       this.modifiedValue = undefined;

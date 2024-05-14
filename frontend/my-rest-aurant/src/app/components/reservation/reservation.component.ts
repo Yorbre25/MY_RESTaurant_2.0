@@ -1,5 +1,5 @@
-import { DatePipe, CommonModule } from '@angular/common';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { DatePipe, CommonModule} from '@angular/common';
+import { Component, ElementRef, ViewChild, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ReservationService } from '../../services/reservation.service';
 import { ReservationsComponent } from '../reservations/reservations.component';
@@ -14,10 +14,15 @@ import { ReservationsComponent } from '../reservations/reservations.component';
 export class ReservationComponent {
   selectedDate?: Date;
   displayCalendar: boolean = false;
-  availableTimes?: string[];  // Array to hold available times for the selected date
-  selectedTime?: string; // To hold the selected time for final reservation
+  availableTimes?: { time: string, maxGuests: number }[];  // Update to hold time and max guests
+  selectedTime?: string;
+  selectedGuests?: number; // To hold the number of guests for the reservation
+  maxGuestsAllowed?: number; // Maximum guests allowed for the selected time
+
 
   @ViewChild('message') message!: ElementRef<HTMLSpanElement>;
+
+  @Input('email') userEmail: string = "" 
 
   constructor(private reservationService: ReservationService) {}
 
@@ -43,12 +48,17 @@ export class ReservationComponent {
     }
   }
 
-  selectTime(time: string): void {
-    this.selectedTime = time; // Save the selected time
-    // Proceed to create a reservation or further actions
+  selectTime(time: { time: string, maxGuests: number }): void {
+    this.selectedTime = time.time;
+    this.maxGuestsAllowed = time.maxGuests;
+    // Optionally open a dialog or display a field to choose the number of guests here
   }
 
   createReservation(): void {
+    if (this.selectedGuests && this.maxGuestsAllowed && this.selectedGuests > this.maxGuestsAllowed) {
+      this.message.nativeElement.innerText = "Error: Number of guests exceeds the maximum allowed.";
+      return;
+    }
     // Here you would call a service to create the reservation with the selected date and time
     console.log(`Creating reservation for ${this.selectedDate} at ${this.selectedTime}`);
   }
