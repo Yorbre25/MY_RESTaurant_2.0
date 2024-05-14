@@ -3,3 +3,4 @@ pydantic
 typing
 requests
 google-cloud-pubsub
+google-auth

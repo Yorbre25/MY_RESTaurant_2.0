@@ -61,12 +61,13 @@ def recommendations(request):
 
     assert request.method == "POST" #checking that the only method used is POST
 
-    
+
     global return_info
     request_json = request.get_json(silent=True)
     message_data = base64.b64decode(request_json['message']['data']).decode('utf-8')
     message = json.loads(message_data)
-
+    print("el message es")
+    print(message)
     return_info={
       "src":message['dst'],
       "dst":message['src'],
