@@ -5,3 +5,6 @@ README.md
 *.pyd
 __pycache__
 .pytest_cache
+deploy.bat
+deploy.sh
+integrationTest.py
