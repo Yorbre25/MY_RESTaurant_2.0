@@ -58,6 +58,10 @@ def publish_error_response(body,error):
 
 @functions_framework.http
 def recommendations(request):
+
+    assert request.method == "POST" #checking that the only method used is POST
+
+    
     global return_info
     request_json = request.get_json(silent=True)
     message_data = base64.b64decode(request_json['message']['data']).decode('utf-8')
@@ -69,7 +73,7 @@ def recommendations(request):
       "flow_id":message['flow_id']
     }
 
-    assert request.method == "POST" #checking that the only method used is POST
+    
 
     meal,recommedation_of=process_input(message)
     suggestion=get_predefined_recom(meal,recommedation_of)
