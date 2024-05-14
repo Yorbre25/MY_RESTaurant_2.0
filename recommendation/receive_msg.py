@@ -9,7 +9,7 @@ class pull_suscriber:
     def __init__(self,suscription_id,sender,id):
         self.project_id = "my-rest-raurant-2"
         self.suscription_id=suscription_id
-        self.timeout = 10
+        self.timeout = 60
         self.sender=sender
         self.id=id
 
