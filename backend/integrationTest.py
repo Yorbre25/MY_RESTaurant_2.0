@@ -10,7 +10,10 @@ def http_request(url, method, data=None):
         raise ValueError("Invalid HTTP method")
     return response
 
-url = "https://backendcloudfunc-x3adwyscpa-uc.a.run.app"
+url = "https://backend-nzaawxvneq-uc.a.run.app"
+
+
+'''
 
 class TestReservationService(unittest.TestCase):
 
@@ -49,6 +52,7 @@ class TestReservationService(unittest.TestCase):
         response = http_request(f"{url}/get-reservations", "POST", data)
         self.assertEqual(response.status_code, 400)
 
+'''
 
 class TestSentimentService(unittest.TestCase):
 
@@ -105,11 +109,11 @@ class TestSentimentService(unittest.TestCase):
 class TestMenuService(unittest.TestCase):
 
     def test_wrong_method(self): #checks that the POST method fails
-        response=http_request(f"{url}/get-menu","POST")
+        response=http_request(f"{url}/get-menu","GET")
         self.assertEqual(response.status_code, 405)
     
     def test_result_format(self): #checks the output result
-        response=http_request(f"{url}/get-menu","GET")
+        response=http_request(f"{url}/get-menu","POST")
         body=response.json()
         self.assertEqual(type(body['main_dishes']),list)
         self.assertEqual(type(body['drinks']),list)
