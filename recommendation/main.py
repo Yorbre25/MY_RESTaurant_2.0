@@ -48,6 +48,15 @@ def handle_type_error(e):
     publish_error_response(body,400)
     return body, 400
 
+@functions_framework.errorhandler(AttributeError) #destiny key dont exists
+def handle_type_error(e):
+    body= {
+        "msg": "The call does not come from a bus"
+    }
+    print("attribute error")
+    publish_error_response(body,200)
+    return body, 200
+
 def publish_error_response(body,error):
   body['error']=error
   if(return_info is not None):
@@ -63,20 +72,25 @@ def recommendations(request):
 
 
     global return_info
+    return_info=None
+
+
     request_json = request.get_json(silent=True)
     message_data = base64.b64decode(request_json['message']['data']).decode('utf-8')
     message = json.loads(message_data)
-    print("el message es")
-    print(message)
+    if('dst' not in message or 'src' not in message or 'flow_id' not in message):
+        raise AttributeError()
     return_info={
       "src":message['dst'],
       "dst":message['src'],
       "flow_id":message['flow_id']
     }
 
-    
+    print("llegue hasta meal")
 
     meal,recommedation_of=process_input(message)
+    print("meal es ")
+    print(meal)
     suggestion=get_predefined_recom(meal,recommedation_of)
     suggestion_text_json=suggestion.json()
     suggestion_json=json.loads(suggestion_text_json)

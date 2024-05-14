@@ -6,11 +6,12 @@ from receive_msg import *
 from send_msg import *
 from available_services import services
 import logging
+from requester import http_request
 app = Flask(__name__)
 CORS(app)
 service_key="BACKEND"
 
-base_url = 'https://us-central1-smart-spark-418815.cloudfunctions.net'
+base_url = 'https://us-central1-my-rest-raurant-2.cloudfunctions.net/recommendation-services'
 
 @app.route('/get-reservations', methods=['POST'])
 def get_reservations():
@@ -33,8 +34,13 @@ def sentiment_api():
 @app.route('/get-recommendation', methods=['POST'])
 def get_recommendation():
     try:
-        body,error_code,CORS=send_msg(request.json,'RECOMMENDATION')
-        return body,error_code,CORS
+        print("la request es")
+        print(request.json)
+        response=http_request(base_url,"POST",request.json)
+        body=json.loads(response.read())
+        error_code=response.code
+        #body,error_code,CORS=send_msg(request.json,'RECOMMENDATION')
+        return body,error_code
     except Exception as e:
         return jsonify({"message": f"Error: {e}"}), 500
 
@@ -62,10 +68,15 @@ def send_msg(body,destiny_key):
         "flow_id":request_id
     }
     request_body=request_body | body
+    print("full body")
+    print(request_body)
     publish(request_body,request_body["dst"])
     my_pull=pull_suscriber(services[service_key].value,services[destiny_key].value,request_id)
     my_pull.listen()
     body,error_code,CORS=my_pull.get_response()
+    print("my response body is")
     return body,error_code,CORS
+
+
 if __name__ == '__main__':
     app.run(debug=True, port=8080)

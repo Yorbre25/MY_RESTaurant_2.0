@@ -1,6 +1,3 @@
-import uuid
-from send_msg import publish
-from receive_msg import pull_suscriber
 import json
 import base64
 import google.auth
@@ -9,7 +6,7 @@ import urllib.request
 import google.auth.transport.requests
 import google.oauth2.id_token
 
-url="https://us-central1-my-rest-raurant-2.cloudfunctions.net/menu_service"
+url="https://us-central1-my-rest-raurant-2.cloudfunctions.net/recommendation-services"
 def http_request(endpoint,method,payload):
     """
     make_authorized_post_request makes a POST request to the specified HTTP endpoint
@@ -25,7 +22,12 @@ def http_request(endpoint,method,payload):
     req.add_header("Authorization", f"Bearer {id_token}")
     req.add_header("Content-Type", "application/json")  # Assuming JSON payload
 
-    
+    destiny_json={
+    "src": "",
+    "dst": "",
+    "flow_id":""
+    }
+    payload= payload | destiny_json
      
     # Convert payload to JSON string
     payload_json = json.dumps(payload)
@@ -54,40 +56,3 @@ def http_request(endpoint,method,payload):
 
 
     return response
-
-
-def request_restaurant_menu():
-    request_id=str(uuid.uuid4())
-    request_body={
-        "dst":"menu_service",
-        "src":"backend",
-        "flow_id":request_id
-    }
-    publish(request_body,request_body['dst'])
-    my_pull=pull_suscriber(request_body['src'],request_body['dst'],request_id)
-    my_pull.listen()
-    body,error_code,CORS=my_pull.get_response()
-    
-
-    return body,error_code
-
-def build_format(menu_json):
-    main_dishes=menu_json["main_dishes"]
-    drinks=menu_json["drinks"]
-    desserts=menu_json["desserts"]
-    formated_menu=[]
-    for i in range(len(main_dishes)):
-        meal={
-            "main_dish":main_dishes[i],
-            "drink":drinks[i],
-            "dessert":desserts[i]
-        }
-        formated_menu.append(meal)
-    return formated_menu
-
-def get_menu():
-    menu,status_code=request_restaurant_menu()
-    if(status_code!=200):
-        return []
-    formatted_menu=build_format(menu)
-    return formatted_menu

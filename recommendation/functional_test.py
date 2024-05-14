@@ -8,7 +8,7 @@ import google.oauth2.id_token
 import json
 import base64
 
-url="https://us-central1-my-rest-raurant-2.cloudfunctions.net/recommendation-service"
+url="https://us-central1-my-rest-raurant-2.cloudfunctions.net/recommendation-services"
 def http_request(endpoint,method,payload):
     """
     make_authorized_post_request makes a POST request to the specified HTTP endpoint
