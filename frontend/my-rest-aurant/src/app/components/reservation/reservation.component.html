@@ -1,4 +1,4 @@
-<app-reservations [email]="userEmail"></app-reservations>
+<app-reservations [email]="userEmail" [isAdmin]="isAdmin"></app-reservations>
 
 <div>
     <button *ngIf="showNewReservationButton" (click)="toggleCalendar()" class="new-reservation-btn">New Reservation</button>

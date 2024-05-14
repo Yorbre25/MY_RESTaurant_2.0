@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 })
 export class ReservationItemComponent {
   @Input() reservationInfo?: Reservation;
+  @Input() isAdmin: boolean = false;
   @Output() modify = new EventEmitter<{ field: string, value: any }>();
   @Output() delete = new EventEmitter<string>();
 
@@ -55,11 +56,23 @@ export class ReservationItemComponent {
 
   confirmModification() {
     if (this.reservationInfo && this.modifyingField && this.modifiedValue !== undefined) {
-      const updatedReservation = { ...this.reservationInfo, [this.modifyingField]: this.modifiedValue };
-      this.reservationService.updateReservation(String(this.reservationInfo.id), updatedReservation).subscribe({
-        next: () => console.log('Reservation updated successfully'),
+      const updateData = {
+        USER_ID: this.reservationInfo.userid,
+        ID: this.reservationInfo.id,
+        Date: this.modifyingField === 'date' ? this.modifiedValue : this.reservationInfo.date,
+        Time: this.modifyingField === 'time' ? this.modifiedValue : this.reservationInfo.time,
+        Number_of_people: this.modifyingField === 'numberOfPeople' ? this.modifiedValue : this.reservationInfo.numberOfPeople
+      };
+
+      this.reservationService.updateReservation(updateData).subscribe({
+        next: () => {
+          console.log('Reservation updated successfully');
+          this.modify.emit({ field: this.modifyingField, value: this.modifiedValue });
+        },
         error: error => console.error('Error updating reservation', error)
       });
+
+      // Reset modification UI state
       this.showModifyOptions = false;
       this.modifyingField = '';
       this.modifiedValue = undefined;

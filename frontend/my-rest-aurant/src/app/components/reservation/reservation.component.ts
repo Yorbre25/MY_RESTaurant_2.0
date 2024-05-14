@@ -22,6 +22,7 @@ export class ReservationComponent {
 
   @ViewChild('message') message!: ElementRef<HTMLSpanElement>;
   @Input('email') userEmail: string = "";
+  @Input('isAdmin') isAdmin: boolean = false;
 
   constructor(private reservationService: ReservationService) {}
 

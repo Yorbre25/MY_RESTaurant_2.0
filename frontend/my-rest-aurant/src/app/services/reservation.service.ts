@@ -63,10 +63,25 @@ export class ReservationService {
       );
   }
 
-  updateReservation(reservationId: string, reservation: any): Observable<any> {
-    return this.http.put(`${this.backEndAddress}/reservations/${reservationId}`, reservation);
+  updateReservation(updateData: ApiReservation): Observable<any> {
+    return this.http.post(`${this.backEndAddress}/edit_reservation`, updateData).pipe(
+      catchError(this.handleError)
+    );
   }
 
+  getAllReservations(): Observable<Reservation[]> {
+    return this.http.get<ApiReservation[]>(`${this.backEndAddress}/all_reservations`).pipe(
+      map(reservations => reservations.map(res => ({
+        id: res.ID,  // Convert ID to string if necessary
+        userid: res.USER_ID,
+        date: res.Date,
+        time: res.Time,
+        numberOfPeople: res.Number_of_people
+      }))),
+      catchError(this.handleError)
+    );
+  }
+  
   // Manejo de errores
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An error occurred';

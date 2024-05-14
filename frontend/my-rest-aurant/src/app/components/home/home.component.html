@@ -3,7 +3,7 @@
     <div class="main-features">
         <app-meal-recommendation></app-meal-recommendation>
         @if (isAdmin || this.userName) {
-            <app-reservation [email]="this.userName"></app-reservation>
+            <app-reservation [email]="this.userName" [isAdmin]="this.isAdmin"></app-reservation>
         }
         <app-feedback></app-feedback>
         @if (isAdmin) {

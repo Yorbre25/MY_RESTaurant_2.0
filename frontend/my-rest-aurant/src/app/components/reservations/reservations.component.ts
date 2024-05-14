@@ -14,34 +14,51 @@ import { ReservationService } from '../../services/reservation.service'; // Impo
 export class ReservationsComponent implements OnInit {
 
   @Input('email') userEmail: string = "" 
+  @Input() isAdmin: boolean = false;
 
   @ViewChildren('dateSection') dateSections?: QueryList<ElementRef<HTMLDivElement>>;
   categorizedReservations: { date: string, reservations: Reservation[] }[] = [];
 
+  constructor(private reservationService: ReservationService) {}
+  
   ngOnInit(): void {
-    this.loadReservations(this.userEmail);
+    this.loadReservations();
   }
 
-  constructor(private reservationService: ReservationService) {}
-
-  loadReservations(userId: string) {
-    if (this.userEmail) {
+  loadReservations() {
+    if (!this.userEmail) {
+      this.loadExampleReservations();  // Load example reservations if no user email is provided
+      return;
+    }
+  
+    if (this.isAdmin) {
+      this.reservationService.getAllReservations().subscribe({
+        next: (reservations) => {
+          console.log('Received reservations:', reservations);  // Check the structure here
+          this.categorizedReservations = this.groupReservationsByDate(reservations);
+        },
+        error: (error) => {
+          console.error('Error loading all reservations from server:', error);
+          this.loadExampleReservations();
+        }
+      });
+    }
+    else {
+      // If the user is not an admin, load reservations specific to the user
       this.reservationService.getReservationsFromUser(this.userEmail).subscribe({
         next: (reservations) => {
           this.categorizedReservations = this.groupReservationsByDate(reservations);
         },
         error: (error) => {
-          console.error('Error loading reservations from server:', error);
-          this.loadExampleReservations();  // Carga reservaciones de ejemplo en caso de error
+          console.error('Error loading user reservations from server:', error);
+          this.loadExampleReservations();  // Load example reservations in case of an error
         }
       });
-    } else {
-      this.loadExampleReservations();  // Carga reservaciones de ejemplo si no hay email
     }
   }
 
   loadExampleReservations() {
-    const exampleReservations = [
+    const exampleReservations: Reservation[] = [
       { id: 1, userid: "Adri", date: "2024-05-20", time: "13:00", numberOfPeople: 3 },
       { id: 2, userid: "Alex", date: "2024-05-21", time: "15:00", numberOfPeople: 2 },
       { id: 3, userid: "John", date: "2024-05-20", time: "17:00", numberOfPeople: 4 }
@@ -49,7 +66,7 @@ export class ReservationsComponent implements OnInit {
     this.categorizedReservations = this.groupReservationsByDate(exampleReservations);
   }
 
-  groupReservationsByDate(reservations: Reservation[]) {
+  groupReservationsByDate(reservations: Reservation[]): { date: string, reservations: Reservation[] }[] {
     return reservations.reduce((acc, reservation) => {
       const existingCategory = acc.find(c => c.date === reservation.date);
       if (existingCategory) {

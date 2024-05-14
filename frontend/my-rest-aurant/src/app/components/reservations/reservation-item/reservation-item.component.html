@@ -2,6 +2,9 @@
     <div class="reservation-info">
         <strong class="time-display">{{ reservationInfo?.time }}</strong>
         <br>
+        <div *ngIf="isAdmin">
+            <strong>User:</strong> {{ reservationInfo?.userid }}
+        </div>
         <strong>Number of Guests:</strong> {{ reservationInfo?.numberOfPeople }}
     </div>
     <div class="action-buttons">

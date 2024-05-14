@@ -3,7 +3,7 @@
     <div *ngFor="let category of categorizedReservations">
         <h3>{{ category.date }}</h3>
         <div *ngFor="let reservation of category.reservations">
-            <app-reservation-item [reservationInfo]="reservation"></app-reservation-item>
+            <app-reservation-item [reservationInfo]="reservation" [isAdmin]="isAdmin"></app-reservation-item>
         </div>
     </div>
     <div *ngIf="categorizedReservations.length === 0">
