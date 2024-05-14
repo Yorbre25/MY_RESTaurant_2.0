@@ -82,12 +82,45 @@ export class ReservationService {
     );
   }
   
-  // Manejo de errores
-  private handleError(error: HttpErrorResponse) {
-    let errorMessage = 'An error occurred';
-    errorMessage = `${error.error} (${error.status})`;
-    console.error(errorMessage);
-    return throwError(() => new Error(errorMessage));
+  createReservation(userId: string, date: string, time: string, numberOfPeople: number): Observable<any> {
+    const body = {
+      USER_ID: userId,
+      Date: date,
+      Time: time,
+      Number_of_people: numberOfPeople
+    };
+  
+    return this.http.post(`${this.backEndAddress}/reserve_function`, body).pipe(
+      catchError(this.handleError)
+    );
   }
+  
+
+
+  // Manejo de errores
+ // Manejo de errores
+private handleError(error: HttpErrorResponse) {
+  if (error.error instanceof ErrorEvent) {
+    // A client-side or network error occurred. Handle it accordingly.
+    console.error('An error occurred:', error.error.message);
+    return throwError(() => new Error('A network error occurred, please try again later.'));
+  } else {
+    if (error.status === 200) {
+      // If the status is 200, ignore the 'error' and do not throw.
+      console.log('Request returned status 200, but was caught in error handling.');
+      return throwError(() => new Error('No error.'));
+    }
+    // The backend returned an unsuccessful response code.
+    // The response body may contain clues as to what went wrong.
+    console.error(
+      `Backend returned code ${error.status}, ` +
+      `body was: ${error.error}`);
+  }
+
+  // Return an observable with a user-facing error message.
+  return throwError(() => new Error('Something bad happened; please try again later.'));
+}
+
+  
 
 }

@@ -251,3 +251,14 @@ li:hover {
 .guest-count {
     font-size: 20px; /* Larger font size for better visibility */
 }
+
+.time-list li.selected-time {
+    background-color: #28a745;  /* A shade of green */
+    color: white;
+}
+
+.time-list li:hover {
+    background-color: #28a745;  /* Same shade of green for hover */
+    color: white;
+    cursor: pointer;
+}

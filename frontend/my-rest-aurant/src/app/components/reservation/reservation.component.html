@@ -3,31 +3,31 @@
 <div>
     <button *ngIf="showNewReservationButton" (click)="toggleCalendar()" class="new-reservation-btn">New Reservation</button>
     
-    <div *ngIf="displayCalendar">
+    <div *ngIf="displayCalendar" class="guest-controls">
         <p>Select a date:</p>
         <input type="date" [(ngModel)]="selectedDate" (change)="checkAvailability()">
-        <button *ngIf="selectedDate" (click)="checkAvailability()" class="show-times-btn">Show Available Times</button>
     </div>
     
     <div *ngIf="availableTimes?.length" class="time-selection-container">
         <p>Select a time:</p>
         <div class="time-list">
             <ul>
-                <li *ngFor="let time of availableTimes" (click)="selectTime(time)">
+                <li *ngFor="let time of availableTimes" (click)="selectTime(time)" [class.selected-time]="time.time === selectedTime">
                     {{ time.time }}
                 </li>
             </ul>
         </div>
     </div>
     
-    
     <div *ngIf="selectedTime">
         <p>Enter number of guests:</p>
         <div class="guest-controls">
-        <button class="btn-guest-control" (click)="decrementGuests()" [disabled]="selectedGuests <= 1">-</button>
-        <span class="guest-count">{{ selectedGuests }}</span>
-        <button class="btn-guest-control" (click)="incrementGuests()" [disabled]="selectedGuests >= (maxGuestsAllowed || 0)">+</button>
+            <button class="btn-guest-control" (click)="decrementGuests()" [disabled]="selectedGuests <= 1">-</button>
+            <span class="guest-count">{{ selectedGuests }}</span>
+            <button class="btn-guest-control" (click)="incrementGuests()" [disabled]="selectedGuests >= (maxGuestsAllowed || 0)">+</button>
+        </div>
+        <form (ngSubmit)="onSubmit()">
+            <button type="submit">Book Now!</button>
+        </form>
     </div>
-    <button (click)="createReservation()" class="book-now-btn">Book Now!</button>
-
 </div>

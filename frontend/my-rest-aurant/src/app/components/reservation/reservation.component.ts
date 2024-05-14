@@ -51,7 +51,6 @@ export class ReservationComponent {
       for (let hour = 9; hour <= 21; hour++) {
         this.availableTimes.push({ time: `${hour}:00`, maxGuests: 5 });
       }
-      this.displayCalendar = false;
     }
   }
 
@@ -61,11 +60,29 @@ export class ReservationComponent {
     this.showNewReservationButton = false; // Hide the new reservation button once time is selected
   }
 
-  createReservation(): void {
-    // Logic to handle creating the reservation
-    console.log(`Creating reservation for ${this.selectedDate} at ${this.selectedTime} with ${this.selectedGuests} guests`);
+  onSubmit(): void {
+    if (this.selectedDate) {
+      const datePipe = new DatePipe('en-US');
+      const formattedDate = datePipe.transform(this.selectedDate, 'yyyy-MM-dd');
+  
+      if (!formattedDate) {
+        console.error('Invalid date');
+        return;
+      }
+  
+      if (this.selectedTime && this.selectedGuests) {
+        this.reservationService.createReservation(this.userEmail, formattedDate, this.selectedTime, this.selectedGuests)
+        .subscribe({
+          next: response => {
+            console.log('Reservation created successfully', response);
+            // Additional logic if needed
+          },
+          error: error => console.error('Failed to create reservation', error)
+        });
+      
+      }
+    }
 
-    // Reset all state after booking to clear the form and show only the new reservation button
     this.selectedDate = undefined;
     this.selectedTime = undefined;
     this.selectedGuests = 1;
@@ -73,4 +90,7 @@ export class ReservationComponent {
     this.displayCalendar = false;
     this.showNewReservationButton = true; // Show the 'New Reservation' button again
   }
-}
+  }
+  
+
+  
