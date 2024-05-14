@@ -1,14 +1,29 @@
+<h3>Admin</h3>
+
 <section class="promoteUser-section">
     <div class="description">
         <span>Promote User To Admin</span>
         <span>Enter the email to promote the user role to admin</span>
-        @if (errorMessage) {
-            <h4 class="error-msg">{{errorMessage}}</h4>
-        }
-        @if (successMessage) {
-            <h4 class="success-msg">{{successMessage}}!</h4>
-        }
+        <span *ngIf="errorMessage" class="error-msg">{{errorMessage}}</span>
+        <span *ngIf="successMessage" class="success-msg">{{successMessage}}!</span>
     </div>
     <input class="promoteUser-input" type="email" [(ngModel)]="email">
+    <button (click)="promoteUser()">Promote User</button>
 </section>
-<button (click)="promoteUser()">Promote User</button>
+
+<section class="promoteUser-section">
+    <div class="description">
+        <span>Edit Working Hours</span>
+        <div class="hour-inputs">
+            <div>
+                <span>Opening Hour:</span>
+                <input class="hour-input" type="number" [(ngModel)]="openingHour" min="0" max="23" placeholder="HH">
+            </div>
+            <div>
+                <span>Closing Hour:</span>
+                <input class="hour-input" type="number" [(ngModel)]="closingHour" min="0" max="23" placeholder="HH">
+            </div>
+        </div>
+        <button (click)="confirmHoursChange()">Confirm Changes</button>
+    </div>
+</section>

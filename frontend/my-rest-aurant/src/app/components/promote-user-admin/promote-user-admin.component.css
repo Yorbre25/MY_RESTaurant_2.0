@@ -56,3 +56,49 @@ button:hover{
     color: green;
     font-weight: bold;
 }
+
+.promoteUser-section, .working-hours-section {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f4f4f400;
+    border-radius: 8px;
+}
+
+.description {
+    margin-bottom: 15px;
+}
+
+.hour-inputs > div {
+    margin-bottom: 10px;
+}
+
+.hour-input {
+    width: 50px;
+    padding: 8px;
+    margin-left: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.error-msg, .success-msg {
+    color: #d9534f;
+    font-weight: bold;
+}
+
+.success-msg {
+    color: #4CAF50;
+}
+
+button {
+    padding: 10px 15px;
+    margin-top: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #4CAF50;
+}

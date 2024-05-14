@@ -24,12 +24,7 @@ export class ReservationService {
   // Obtener información de la reserva
   getReservationInfo(body: { fecha: string }): Observable<any> {
     console.log({ body })
-    const headers = new HttpHeaders({
-      'Access-Control-Allow-Origin': '*',
-      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
-      "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
-    });
-    return this.http.post(`${this.backEndAddress}/get-reservations`, body, { headers }).pipe(
+    return this.http.post(`${this.backEndAddress}/get-reservations`, body).pipe(
       catchError(this.handleError)
     );
   }
@@ -45,11 +40,11 @@ export class ReservationService {
 
   // Fetch reservations for a specific user
   getReservationsFromUser(userId: string): Observable<Reservation[]> {
-    return this.http.get<ApiReservation[]>(`${this.backEndAddress}/extract_reservations`, {
-      params: { User_id: userId }
-    }).pipe(
+    return this.http.post<ApiReservation[]>(`${this.backEndAddress}/extract_reservations`,
+      { User_id: userId }
+    ).pipe(
       map((reservations: ApiReservation[]) => reservations.map((res: ApiReservation): Reservation => ({
-        id: res.ID.toString(),  // Convert number ID to string if necessary
+        id: res.ID,  // Convert number ID to string if necessary
         userid: res.USER_ID,
         date: res.Date,
         time: res.Time,
@@ -60,12 +55,12 @@ export class ReservationService {
   }
 
   // Eliminar una reservación
-  deleteReservation(reservationId: string): Observable<any> {
-    return this.http.delete(`${this.backEndAddress}/delete-reservation`, {
-      params: { reservationId }
-    }).pipe(
-      catchError(this.handleError)
-    );
+  deleteReservation(reservationId: number): Observable<any> {
+    const body = { ID: reservationId };
+    return this.http.post(`${this.backEndAddress}/cancel_reservation`, body)
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   updateReservation(reservationId: string, reservation: any): Observable<any> {

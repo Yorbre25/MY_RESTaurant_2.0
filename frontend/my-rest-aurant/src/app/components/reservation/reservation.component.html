@@ -1,7 +1,7 @@
-<app-reservations [email]="this.userEmail" ></app-reservations>
+<app-reservations [email]="userEmail"></app-reservations>
 
 <div>
-    <button *ngIf="!displayCalendar" (click)="toggleCalendar()" class="new-reservation-btn">New Reservation</button>
+    <button *ngIf="showNewReservationButton" (click)="toggleCalendar()" class="new-reservation-btn">New Reservation</button>
     
     <div *ngIf="displayCalendar">
         <p>Select a date:</p>
@@ -9,20 +9,25 @@
         <button *ngIf="selectedDate" (click)="checkAvailability()" class="show-times-btn">Show Available Times</button>
     </div>
     
-    <div *ngIf="availableTimes?.length">
-        <p>Select a time and see available slots:</p>
-        <ul>
-            <li *ngFor="let time of availableTimes" (click)="selectTime(time)">
-                {{ time.time }} (Max guests: {{ time.maxGuests }})
-            </li>
-        </ul>
+    <div *ngIf="availableTimes?.length" class="time-selection-container">
+        <p>Select a time:</p>
+        <div class="time-list">
+            <ul>
+                <li *ngFor="let time of availableTimes" (click)="selectTime(time)">
+                    {{ time.time }}
+                </li>
+            </ul>
+        </div>
     </div>
+    
     
     <div *ngIf="selectedTime">
         <p>Enter number of guests:</p>
-        <input type="number" [(ngModel)]="selectedGuests" min="1" max="{{ maxGuestsAllowed }}" placeholder="Number of Guests">
+        <div class="guest-controls">
+        <button class="btn-guest-control" (click)="decrementGuests()" [disabled]="selectedGuests <= 1">-</button>
+        <span class="guest-count">{{ selectedGuests }}</span>
+        <button class="btn-guest-control" (click)="incrementGuests()" [disabled]="selectedGuests >= (maxGuestsAllowed || 0)">+</button>
     </div>
-    
-    <button *ngIf="selectedGuests" (click)="createReservation()" class="book-now-btn">Book Now!</button>
-    <span #message></span>
+    <button (click)="createReservation()" class="book-now-btn">Book Now!</button>
+
 </div>

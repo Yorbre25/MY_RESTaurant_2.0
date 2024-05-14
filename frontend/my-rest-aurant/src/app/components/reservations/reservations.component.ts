@@ -42,9 +42,9 @@ export class ReservationsComponent implements OnInit {
 
   loadExampleReservations() {
     const exampleReservations = [
-      { id: "res1", userid: "Adri", date: "2024-05-20", time: "13:00", numberOfPeople: 3 },
-      { id: "res2", userid: "Alex", date: "2024-05-21", time: "15:00", numberOfPeople: 2 },
-      { id: "res3", userid: "John", date: "2024-05-20", time: "17:00", numberOfPeople: 4 }
+      { id: 1, userid: "Adri", date: "2024-05-20", time: "13:00", numberOfPeople: 3 },
+      { id: 2, userid: "Alex", date: "2024-05-21", time: "15:00", numberOfPeople: 2 },
+      { id: 3, userid: "John", date: "2024-05-20", time: "17:00", numberOfPeople: 4 }
     ];
     this.categorizedReservations = this.groupReservationsByDate(exampleReservations);
   }

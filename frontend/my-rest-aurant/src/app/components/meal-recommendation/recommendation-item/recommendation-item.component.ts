@@ -12,11 +12,11 @@ import { MealRecommendationService } from '../../../services/meal-recommendation
 export class RecommendationItemComponent {
   @Input() mealInfo?: Meal;
 
-  constructor(private recommendaionService: MealRecommendationService){ }
+  constructor(private recommendationService: MealRecommendationService){ }
   
   removeRecItem(){
     if(this.mealInfo){
-      this.recommendaionService.removeMeal(this.mealInfo);
+      this.recommendationService.removeMeal(this.mealInfo);
     }
   }
 }
