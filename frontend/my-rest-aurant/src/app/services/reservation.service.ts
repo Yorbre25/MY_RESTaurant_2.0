@@ -8,11 +8,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class ReservationService {
 
 
-  backEndAddress: string = "https://backendcloudfunc-x3adwyscpa-uc.a.run.app/";
+  backEndAddress: string = "hhttps://reserv-service-nzaawxvneq-uc.a.run.app";
 
   constructor(private http: HttpClient) { }
 
-  getReservationInfo(body: { "fecha":string, "hora":string }):Observable<any>
+  getReservationInfo(body: { "fecha":string }):Observable<any>
   {
     console.log({body})
     const head = new HttpHeaders({

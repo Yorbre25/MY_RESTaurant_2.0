@@ -1,0 +1,62 @@
+.reservation-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s; /* Transiciones suaves para efectos visuales */
+    border-radius: 8px; /* Esquinas redondeadas para los elementos de reserva */
+}
+
+.reservation-item:hover {
+    background-color: #f7f7f7; /* Fondo gris claro al pasar el mouse */
+    transform: scale(1.03); /* Escala ligeramente mayor para llamar la atención */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra sutil para profundidad */
+}
+
+.reservation-info {
+    flex-grow: 1;
+}
+
+.time-display {
+    font-size: 1.5em; /* Tamaño de fuente aumentado para mejor visibilidad */
+}
+
+.action-buttons {
+    display: flex;
+    align-items: center;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    margin-left: 10px;
+    transition: background-color 0.3s, transform 0.3s; /* Transiciones consistentes para efectos de botones */
+    border-radius: 50%; /* Botones circulares para una apariencia más ordenada */
+}
+
+.icon-button i {
+    font-size: 1.2em; /* Ajustar tamaño del ícono si es necesario */
+}
+
+.icon-button:hover {
+    transform: scale(1.2); /* Aumentar la escala para enfatizar */
+}
+
+/* Mantén los estilos de hover para el botón de editar */
+.icon-button.modify:hover {
+    background-color: #add8e6; /* Azul claro */
+}
+
+/* Agrega un nuevo estilo para el botón de editar cuando está activo */
+.icon-button.modify.active {
+    background-color: #add8e6; /* Azul claro */
+}
+
+/* Estilos específicos para el botón de eliminar */
+.icon-button.delete:hover {
+    background-color: #f08080; /* Fondo rojo suave al pasar el mouse */
+}

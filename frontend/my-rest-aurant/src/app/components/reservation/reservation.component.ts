@@ -1,34 +1,55 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ReservationService } from '../../services/reservation.service';
+import { ReservationsComponent } from '../reservations/reservations.component';
 
 @Component({
   selector: 'app-reservation',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule, ReservationsComponent],
   templateUrl: './reservation.component.html',
-  styleUrl: './reservation.component.css'
+  styleUrls: ['./reservation.component.css']
 })
 export class ReservationComponent {
-  selectedDateTime?: Date;
-  @ViewChild('message') message!: ElementRef<HTMLParagraphElement>;
-  @ViewChild('alternative_date') alternative_date!: ElementRef<HTMLParagraphElement>;
-  @ViewChild('alternative_time') alternative_time!: ElementRef<HTMLParagraphElement>;
+  selectedDate?: Date;
+  displayCalendar: boolean = false;
+  availableTimes?: string[];  // Array to hold available times for the selected date
+  selectedTime?: string; // To hold the selected time for final reservation
+
+  @ViewChild('message') message!: ElementRef<HTMLSpanElement>;
 
   constructor(private reservationService: ReservationService) {}
-  CheckReservation(){
-    console.log(this.selectedDateTime)
-    const inputDate = new Date(this.selectedDateTime ?? "");
-    const datePipe = new DatePipe('en-US');
-    const dateSection = datePipe.transform(inputDate, 'yyyy-MM-dd');
-    const timeSection = datePipe.transform(inputDate, 'HH:mm');
 
-    this.reservationService.getReservationInfo({ "fecha": dateSection ?? "", "hora": timeSection ?? "" }).subscribe((data: { "available" : boolean, "message" : string, "alternative_date"?: string, "alternative_time"?: string }) => {
-      console.log({data})
-      this.message.nativeElement.innerText = data.message;
-      this.alternative_date.nativeElement.innerText = data.alternative_date ? "Alternative date: "+data.alternative_date : "";
-      this.alternative_time.nativeElement.innerText = data.alternative_time ? "Alternative time: "+data.alternative_time : "";
-    })
+  toggleCalendar(): void {
+    this.displayCalendar = !this.displayCalendar; // Toggle calendar display
+  }
+
+  checkAvailability(): void {
+    if (this.selectedDate) {
+      const datePipe = new DatePipe('en-US');
+      const formattedDate = datePipe.transform(this.selectedDate, 'yyyy-MM-dd');
+      if (formattedDate) {
+        this.reservationService.getReservationInfo({ fecha: formattedDate }).subscribe({
+          next: (times) => {
+            this.availableTimes = times; // Assuming the backend returns an array of strings
+            this.displayCalendar = false; // Optionally close the calendar here
+          },
+          error: () => {
+            this.message.nativeElement.innerText = "Error checking availability.";
+          }
+        });
+      }
+    }
+  }
+
+  selectTime(time: string): void {
+    this.selectedTime = time; // Save the selected time
+    // Proceed to create a reservation or further actions
+  }
+
+  createReservation(): void {
+    // Here you would call a service to create the reservation with the selected date and time
+    console.log(`Creating reservation for ${this.selectedDate} at ${this.selectedTime}`);
   }
 }

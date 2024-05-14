@@ -1,11 +1,23 @@
-<section class="reservation-section">
-    <div class="description">
-        <span>Reservation</span>
-        <span>Select your available date to generate reservation options</span>
+<app-reservations></app-reservations>
+
+<div>
+    <button *ngIf="!displayCalendar" (click)="toggleCalendar()" class="new-reservation-btn">New Reservation</button>
+    
+    <div *ngIf="displayCalendar">
+        <p>Select a date:</p>
+        <input type="date" [(ngModel)]="selectedDate" (change)="checkAvailability()">
+        <button *ngIf="selectedDate" (click)="checkAvailability()" class="show-times-btn">Show Available Times</button>
     </div>
-    <input class="date-input" type="datetime-local" [(ngModel)]="selectedDateTime">
-</section>
-<button (click)="CheckReservation()">Check reservation</button>
-<p class="response-parag" #message></p>
-<p class="response-parag" #alternative_date></p>
-<p class="response-parag" #alternative_time></p>
+    
+    <div *ngIf="availableTimes?.length">
+        <p>Select a time:</p>
+        <ul>
+            <li *ngFor="let time of availableTimes" (click)="selectTime(time)">
+                {{ time }}
+            </li>
+        </ul>
+    </div>
+    
+    <button *ngIf="selectedTime" (click)="createReservation()" class="book-now-btn">Book Now!</button>
+    <span #message></span>
+</div>

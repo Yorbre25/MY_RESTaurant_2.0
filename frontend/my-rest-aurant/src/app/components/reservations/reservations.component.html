@@ -1,0 +1,12 @@
+<div>
+    <h2>Current Reservations</h2>
+    <div *ngFor="let category of categorizedReservations">
+        <h3>{{ category.date }}</h3>
+        <div *ngFor="let reservation of category.reservations">
+            <app-reservation-item [reservationInfo]="reservation"></app-reservation-item>
+        </div>
+    </div>
+    <div *ngIf="categorizedReservations.length === 0">
+        No reservations found
+    </div>
+</div>

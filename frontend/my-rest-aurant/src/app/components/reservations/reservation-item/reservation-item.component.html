@@ -1,0 +1,33 @@
+<div class="reservation-item">
+    <div class="reservation-info">
+        <strong class="time-display">{{ reservationInfo?.time }}</strong>
+        <br>
+        <strong>Name:</strong> {{ reservationInfo?.name }}
+        <strong>Number of People:</strong> {{ reservationInfo?.numberOfPeople }}
+    </div>
+    <div class="action-buttons">
+        <button (click)="onModify()" [class.active]="showModifyOptions" class="icon-button modify">
+            Edit
+        </button>
+    </div>
+    <div *ngIf="showModifyOptions" class="modify-options">
+        <button (click)="onModifyOption('date')" [class.active]="modifyingField === 'date'" class="icon-button modify">
+            <i class="fa fa-calendar"></i>
+        </button>
+        <button (click)="onModifyOption('time')" [class.active]="modifyingField === 'time'" class="icon-button modify">
+            <i class="fa fa-clock-o"></i>
+        </button>
+        <button (click)="onModifyOption('numberOfPeople')" [class.active]="modifyingField === 'numberOfPeople'" class="icon-button modify">
+            <i class="fa fa-users"></i>
+        </button>
+        <input *ngIf="modifyingField === 'date'" [(ngModel)]="modifiedValue" type="date" placeholder="New Date">
+        <input *ngIf="modifyingField === 'time'" [(ngModel)]="modifiedValue" type="time" placeholder="New Time">
+        <input *ngIf="modifyingField === 'numberOfPeople'" [(ngModel)]="modifiedValue" type="number" placeholder="New Number of People">
+        <button (click)="confirmModification()" class="icon-button modify active" style="background-color: #5cb85c;">
+            <i class="fa fa-check"></i>
+        </button>
+    </div>
+    <button (click)="onDelete()" class="icon-button delete">
+        <i class="fa fa-trash"></i>
+    </button>
+</div>
